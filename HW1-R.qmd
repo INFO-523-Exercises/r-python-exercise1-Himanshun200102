@@ -4,23 +4,1306 @@ format: html
 editor: visual
 ---
 
-## Quarto
+# Introduction to R HW1
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+# PART II
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## To check the R version installed in your system use the following code
 
 ```{r}
-1 + 1
+R.version
 ```
 
-You can add options to executable code like this
+#### To install Packages in R use the following code
+
+#### #here we are installing DMwR2 package which is used in data mining
+
+\####`{r} ####install.packages("DMwR2") ####`
+
+#### We will use help() to see what is in the package
 
 ```{r}
-#| echo: false
-2 * 2
+help(package="DMwR2")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+#### If we want to use a function from the installed library we need to use library() function.
+
+```{r}
+library(DMwR2)
+```
+
+#### As we have now loaded the package we can use any function from it example -
+
+```{r}
+data(algae)
+algae
+```
+
+#### to find rows with too many nans
+
+```{r}
+manyNAs(algae)
+```
+
+#### To get list of packages installed in different libraries use
+
+```{r}
+library()
+```
+
+#### The following command will show the packages loaded in the session
+
+```{r}
+(.packages())
+```
+
+#### #Another way to see the packages installed
+
+```{r}
+installed.packages()
+```
+
+#### Use following code to see if installed packages have newer version
+
+```{r}
+old.packages()
+```
+
+#### To update all the packages to newer version
+
+\####`{r} ####update.packages() ####`
+
+#### Use following to update all the insatalled packages without the confirmation
+
+\####`{r} ####update.packages(ask=FALSE) ####`
+
+#### To find namespace/package a function belongs in your installed package, just type function name
+
+```{r}
+mean
+```
+
+#### To find help on a function
+
+```{r}
+help(mean)
+```
+
+If package we want to use has already been made
+
+```{r}
+RSiteSearch('neural networks')
+```
+
+## Project and Session Management
+
+## Utilize the Project feature for effective management of your R scripts and data.
+
+In RStudio, navigate to File \> New Project to establish a new folder on your computer dedicated to your project.
+
+Within the project folder, you can create and store multiple scripts alongside the data you're working with.
+
+To continue your work within a project, go to File \> Open Project, which restores your previous workspace.
+
+Your project folder functions as your current working directory, where you can conveniently save your .R and .RData files.
+
+However, it's worth noting that a .R file can also exist independently outside of a project or project folder.
+
+Closing a Project in RStudio will shut down the current project while keeping the session active, allowing you to keep the RStudio interface open.
+
+On the other hand, selecting Quit Session closes the current RStudio window entirely.
+
+When dealing with long and intricate commands in the console, it can be constraining.
+
+A more efficient approach is to input all your commands into a text file, save it, and then either:
+
+1\. Execute the series of commands using \[1\] source('path_to_mycode.R').
+
+2\. Open mycode.R in RStudio's script tab and execute your commands from there using the Run or Source button.
+
+\- Run: Execute the code line by line.
+
+\- Source: Execute the entire script at once.
+
+Frequently, you may need to save substantial data objects or functions for future use.
+
+\####`{r} ####save(my.function, mydataset, file="path_to_mysession.RData") ####load("path_to_mysession.RData") ####`
+
+## Save all objects
+
+All objects are saved in .RData file for you to load ahead in future
+
+```{r}
+save.image()
+```
+
+use getwd() and show() in RStudio Console for current working Directory and set working directory.
+
+# R Objects and Variables
+
+variables are fundamental components used to store and manipulate data. They serve as named containers or identifiers for holding values, which can be numbers, text, objects, or other data types. e.g. assigning number 3 to a variable.
+
+```{r}
+var <- 3
+```
+
+To see what the var variable holds
+
+```{r}
+var
+```
+
+To print variable while assigning use ()
+
+```{r}
+(var <- 3)
+```
+
+More Example For Same
+
+```{r}
+x <- 10
+y <- var*x
+y
+```
+
+To list the current alive variables
+
+```{r}
+ls() # we can also use
+objects()
+```
+
+Using the following command we can remove variable from the memory
+
+```{r}
+rm(var)
+```
+
+# R Functions
+
+In R, functions are blocks of reusable code that perform specific tasks or operations. Functions are a fundamental concept in R and play a central role in data analysis, statistical modeling, and programming.
+
+Here are some examples
+
+```{r}
+max(10, 30, 20, 11)
+```
+
+```{r}
+mean(10,20,30,40,50)
+```
+
+```{r}
+mean(sample(1:100, 30))
+```
+
+```{r}
+set.seed(1) #In the context of R, functions represent segments of code that can be reused to execute particular tasks or actions. They stand as a fundamental principle within R, assuming a pivotal role in activities such as data analysis, statistical modeling, and programming.
+
+rnorm(1)
+```
+
+```{r}
+rnorm(1)
+```
+
+We employ the set.seed() function to ensure that when running a program that involves generating random samples multiple times, we obtain consistent results for the purpose of debugging.
+
+To initiate the creation of a new function called 'se' (representing the standard error of means), the initial step is to verify whether 'se' already exists within our present environment.
+
+```{r}
+exists("se")
+```
+
+Now we will create the function that computes the standard error of a sample.
+
+```{r}
+se <- function(x){
+  variance <- var(x)
+  n <-length(x)
+  return (sqrt(variance/n))
+}
+```
+
+```{r}
+exists("se")
+```
+
+Same way, we can create a function to convert meters to inches,feet,yards and miles.
+
+```{r}
+convMeters <- function (x, to="inch"){
+  factor = switch(to, inch=39.3701, foot=3.28084, yard=1.09361, mile=0.000621371, NA)
+  if(is.na(factor)) stop ("unknown target unit")
+  else return (x*factor)
+}
+convMeters(40, "foot")
+```
+
+#Note is no argument is used above 'inch' is used
+
+# Factors
+
+In R, factor variables are a data type used to represent categorical data. Categorical data consists of distinct categories or groups and is often used to label or group data into meaningful subsets. Factor variables are essential for tasks like statistical modeling and data analysis.
+
+We can use factor() to create factor
+
+```{r}
+g <-c('f', 'm', 'f', 'f', 'f', 'm', 'm', 'f')
+g <- factor(g)
+```
+
+using levels
+
+```{r}
+other.g <-factor(c('m', 'm', 'm', 'm'), levels= c('f', 'm'))
+other.g
+```
+
+We can use factor for illustrating concept of marginal frequencies or marginal distributions.
+
+```{r}
+g <- factor(c('f', 'm', 'f', 'f', 'f', 'm', 'm', 'f'))
+table(g)
+```
+
+```{r}
+a <- factor(c('adult', 'juvenile','adult', 'juvenile','adult', 'juvenile','juvenile', 'juvenile'))
+table(a, g)
+```
+
+```{r}
+a <- factor(c('adult', 'juvenile','adult', 'juvenile','adult', 'juvenile','juvenile', 'juvenile'))
+t <- table(a, g)
+t
+```
+
+```{r}
+a <- factor(c('adult', 'juvenile','adult', 'juvenile','adult', 'juvenile','juvenile', 'juvenile'))
+t <- table(a, g)
+t
+```
+
+Find marginal frequency of a factor
+
+```{r}
+margin.table(t, 1)#1 refers to the first factor, a (age)
+```
+
+```{r}
+margin.table(t, 2)# now find the marginal freq of the second factor g
+```
+
+To find relative frequency
+
+```{r}
+prop.table(t, 1) #use the margin generated for the 1st factor a 
+```
+
+```{r}
+prop.table(t, 2)
+```
+
+```{r}
+prop.table(t) #overall
+```
+
+```{r}
+prop.table(t) * 100
+```
+
+# R Data Structures
+
+## Vectors
+
+In R, a vector is one of the fundamental data structures used to store and manipulate collections of data. Vectors are a versatile and important concept in R programming.
+
+To create a vector
+
+```{r}
+v <- c(2, 5, 3, 4)
+length(v)
+```
+
+To know the data type of a vector
+
+```{r}
+mode(v)
+```
+
+If Strings and numbers are mixed it will show data type as character.
+
+```{r}
+v <- c(2, 5, 3, 4, 'me')
+mode(v)
+```
+
+```{r}
+v
+```
+
+Boolean Vector
+
+```{r}
+vec <- c(TRUE,TRUE,NA,FALSE)
+mode(vec)
+```
+
+```{r}
+vec
+```
+
+In vector elements are indexed starting from 1
+
+```{r}
+vec[4]
+```
+
+We can update a vector to a specific index
+
+```{r}
+vec[4] <- TRUE
+vec
+```
+
+Even we can add any values anywhere at any index as vectors are elastic.
+
+```{r}
+vec[7] <- TRUE
+vec
+```
+
+we can create a empty vector
+
+```{r}
+e <-vector()
+mode(e)
+```
+
+```{r}
+e <- c()
+mode(e)
+```
+
+```{r}
+length(e)
+```
+
+Using a vector element we can create another vector
+
+```{r}
+vec2 <-c(vec[1], vec[3], vec[5])
+vec2
+```
+
+To find square root of all elements
+
+```{r}
+v <- c(10,20,30,40,50)
+sqrt(v)
+```
+
+## Vector Arithmetic
+
+```{r}
+v1 <- c(3, 6, 9)
+v2 <- c(1, 4, 8)
+v1+v2 #addition
+```
+
+```{r}
+v1*v2 #dot product
+```
+
+```{r}
+v1-v2 #subtraction
+```
+
+```{r}
+v1/v2 #divsion
+```
+
+#In vectors arithmetic operations with different vector size is allowed.
+
+```{r}
+v3 <- c(1, 4)
+v1+v3#the recycling rule makes v3 [1, 4, 1]
+```
+
+a single value is vector too
+
+```{r}
+2*v1
+```
+
+# PART II
+
+If we know the distribution we can generate vectors.
+
+```{r}
+(x <-1:10)
+```
+
+```{r}
+(x <-10:1)
+```
+
+#Note : operator have higher precedence tahn arithmetic operator
+
+```{r}
+10:15-1
+```
+
+```{r}
+(seq(from=1, to=5, length=4)) # 4 values between 1 and 5 inclusive, even intervals/steps
+```
+
+```{r}
+(seq(length=10, from=-2, by=0.5)) #10 values, starting from 2, interval/step = 0.5
+```
+
+```{r}
+(rep(5, 10))
+```
+
+```{r}
+(rep("hi", 3))
+```
+
+```{r}
+(rep(1:2, 3))
+```
+
+```{r}
+(rep(TRUE:FALSE, 3))
+```
+
+```{r}
+(rep(1:2, each=3))
+```
+
+```{r}
+gl(3, 5) #three levels, each repeat 5 times
+```
+
+```{r}
+gl(2, 5, labels= c('female', 'male'))#two levels, each level repeat 5 times
+```
+
+```{r}
+#first argument 2 says two levels. 
+#second argument 1 says repeat once
+#third argment 20 says generate 20 values
+gl(2, 1, 20, labels=c('female', 'male'))#10 alternating female and male pairs, a total of 20 values.
+```
+
+We can use factor() to convert number sequence to factor level labels.
+
+```{r}
+n <- rep(1:2, each=3)
+(n <- factor(n, 
+             levels = c(1, 2),
+             labels = c('female','male')
+             ))
+```
+
+```{r}
+n
+```
+
+generating random number using rnorm
+
+```{r}
+(rnorm(10, mean=10, sd=3))
+```
+
+```{r}
+(rt(10, df=5)) #10 values following a Student T distribution with degree of freedom of 5
+```
+
+#### **Exercise**:
+
+\(1\) Generate a random sample of `normally distributed` data of `size 100`, with a `mean of 20` and `standard deviation 4`
+
+```{r}
+(rnorm(100, mean=20, sd=4))
+```
+
+```{r}
+dataset <- (rnorm(100, mean=20, sd=4))
+len <- length(dataset)
+sem <- dataset/ sqrt(len)
+sem
+```
+
+## Sub-Setting
+
+```{r}
+x <- c(0, -3, 4, -1, 45, 90, -5)
+#select all elements that is greater than 0
+(gtzero <- x[x>0])
+```
+
+```{r}
+x <- c(0, -3, 4, -1, 45, 90, -5)
+(x[x<=-2 | x>5])        
+```
+
+```{r}
+(x[x>40 & x<100])
+```
+
+```{r}
+x <- c(0, -3, 4, -1, 45, 90, -5)
+(x[c(4, 6)])#select the 4th and 6th elements in the vector
+```
+
+```{r}
+(y<-c(4,6)) #same as above
+```
+
+```{r}
+(x[y])
+```
+
+```{r}
+(x[1:3]) #select the 1st to the 3rd elements in the vector
+```
+
+```{r}
+x <- c(0, -3, 4, -1, 45, 90, -5)
+(x[-1]) #select all but the first element
+```
+
+```{r}
+(x[-c(4, 6)])
+```
+
+```{r}
+(x[-(1:3)])
+```
+
+## Named Elements
+
+We can assign names to vector elements
+
+```{r}
+x <- c(0, -3, 4, -1, 45, 90, -5)
+names(x) <- c('s1', 's2', 's3', 's4', 's5', 's6', 's7')
+x
+```
+
+```{r}
+(pH <- c(area1=4.5, area2=5.7, area3=9.8, mud=7.2))
+```
+
+```{r}
+pH['mud']
+```
+
+```{r}
+pH[c('area1', 'mud')]
+```
+
+#Note we can not use elements directly to exclude
+
+eg \# x\[-"s1"\] results in error
+
+Empty index means to select all
+
+```{r}
+pH[]
+```
+
+```{r}
+pH
+```
+
+We can reset a vector using following
+
+```{r}
+pH[] <- 0
+pH
+```
+
+```{r}
+pH<- 0
+pH
+```
+
+# More R Data Structures
+
+## Matrices and Array
+
+A matrix is a two-dimensional data structure in R, similar to a table or spreadsheet. It consists of rows and columns, and all elements within a matrix must be of the same data type
+
+An array is a multi-dimensional data structure in R that extends beyond the two dimensions of a matrix. It can have multiple dimensions, making it suitable for storing and analyzing data with higher complexity.
+
+Creating a Matrix
+
+```{r}
+m <- c(45, 23, 66, 77, 33, 44, 56, 12, 78, 23)
+is.vector(m)
+```
+
+```{r}
+is.matrix(m)
+```
+
+```{r}
+is.array(m)
+```
+
+```{r}
+dim(m) <-c(2, 5)#make the vector a 2 by 5 matrix, 2x5 must = lenght of the vector
+m
+```
+
+```{r}
+is.vector(m)
+```
+
+```{r}
+is.matrix(m)
+```
+
+```{r}
+is.array(m)
+```
+
+### Exercise
+
+Create a matrix with two columns:
+
+First columns hold age data for a group of students `11, 11, 12, 13, 14, 9, 8`, and second columns hold grades `5, 5, 6, 7, 8, 4, 3`.
+
+```{r}
+test <-matrix(c(11, 11, 12, 13, 14, 9, 8, 5, 5, 6, 7, 8, 4, 3), 7, 2)
+test
+```
+
+```{r}
+m <- c(45, 23, 66, 77, 33, 44, 56, 12, 78, 23)
+#then 'organize' the vector as a matrix
+dim(m) <- c(2, 5)#make the vector a 2 by 5 matrix, 2x5 must = lenght of the vector
+m
+```
+
+```{r}
+m[2, 3]#the element at row 2 and column 3
+```
+
+```{r}
+(s<- m[2, 1]) # select one value
+```
+
+```{r}
+(m<- m [c(1,2), -c(3, 5)]) #select 1st row and 1st, 2nd, and 4th columns: result is a vector
+```
+
+```{r}
+(m [1, ]) #select complete row or column: 1st row, result is a vector
+```
+
+```{r}
+(m [1, ]) #select complete row or column: 1st row, result is a vector
+```
+
+```{r}
+is.vector(m)
+```
+
+```{r}
+is.matrix(m)
+```
+
+```{r}
+is.vector(v)
+```
+
+```{r}
+is.matrix(v)
+```
+
+To keep results as matrix use drop = FALSE
+
+```{r}
+m <- matrix(c(45, 23, 66, 77, 33, 44, 56, 12, 78, 23), 2, 5)
+(m<-m [, 2, drop = FALSE])
+```
+
+```{r}
+is.matrix(m)
+```
+
+```{r}
+is.vector(m)
+```
+
+```{r}
+cbind (c(1,2,3), c(4, 5, 6))
+```
+
+```{r}
+rbind (c(1,2,3), c(4, 5, 6))
+```
+
+```{r}
+m <- matrix(c(45, 23, 66, 77, 33, 44, 56, 12, 78, 23), 2, 5)
+(a <- rbind (c(1,2,3,4,5), m))
+```
+
+```{r}
+is.array(a)
+```
+
+```{r}
+is.matrix(a)
+```
+
+## Exercise
+
+```{r}
+#m1 <- matrix(rep(10, 9), 3, 3) 
+#m2 <- cbind (c(1,2,3), c(4, 5, 6)) 
+#m3 <- cbind (m1[,1], m2[2,]) 
+#m4 <- cbind (m1[,1], m2[,2])
+# Gives Error
+```
+
+```{r}
+sales <- matrix(c(10, 30, 40, 50, 43, 56, 21, 30), 2, 4, byrow=TRUE)
+colnames(sales) <- c('1qrt', '2qrt', '3qrt', '4qrt')
+rownames(sales) <- c('store1', 'store2')
+sales
+```
+
+### Exercise
+
+```{r}
+sales['store1', '1qrt']
+```
+
+```{r}
+sales['store2', c('1qrt', '4qrt')]
+```
+
+## Arrays
+
+```{r}
+a <- array(1:48, dim= c(4, 3, 2))
+a
+```
+
+```{r}
+a [1, 3, 2]
+```
+
+```{r}
+a [1, , 2]
+```
+
+```{r}
+a [1, , 2, drop=FALSE]
+```
+
+```{r}
+a [4, 3, ]
+```
+
+```{r}
+a [c(2, 3), , -2]
+```
+
+Assigning Names To Dimentions of array
+
+```{r}
+dimnames(a)[[1]] <-c("1qrt", "2qrt", "3qrt", "4qrt")
+dimnames(a)[[2]] <-c("store1", "store2", "store3")
+dimnames(a)[[3]] <-c("2017", "2018")
+a
+```
+
+```{r}
+ar <- array(data     = 1:27,
+            dim      = c(3, 3, 3),
+            dimnames = list(c("a", "b", "c"),                                                                    c("d", "e", "f"),                                                                       c("g", "h", "i")))
+ar
+```
+
+Splitting array into matrices
+
+```{r}
+matrix1 <- ar[,,g]
+```
+
+```{r}
+matrix1 <- ar[,,'g']
+matrix1
+```
+
+```{r}
+matrix2 <- ar[,,'h']
+matrix2
+```
+
+```{r}
+sum <-matrix1 + matrix2
+sum
+```
+
+```{r}
+matrix1*3
+```
+
+```{r}
+matrix1
+```
+
+```{r}
+matrix1*c(2, 3)
+```
+
+```{r}
+matrix1*c(2,3,2,3,2,3,2,3,2)
+```
+
+```{r}
+matrix1*c(1, 2, 3)
+```
+
+```{r}
+matrix1/c(1, 2, 3)
+```
+
+```{r}
+matrix1/c(1, 2, 3, 1, 2, 3, 1, 2, 3)
+```
+
+## Lists
+
+A list is a versatile and flexible data structure used to store a collection of different data types (such as vectors, matrices, other lists, or even functions) within a single object. Lists provide a way to organize and manipulate heterogeneous data.
+
+```{r}
+mylist <- list(stud.id=34453,
+               stud.name="John",
+               stud.marks= c(13, 3, 12, 15, 19)
+               )
+
+mylist$stud.id
+```
+
+```{r}
+mylist[1]
+```
+
+```{r}
+mylist[[1]]
+```
+
+```{r}
+mylist["stud.id"]
+```
+
+#Note \[ is used to extract subset
+
+#Note \[\[ is used to extract one item
+
+#Note \$ is a special case of \[\[
+
+```{r}
+mylist <- list(stud.id=34453,
+               stud.name="John",
+               stud.marks= c(13, 3, 12, 15, 19)
+               )
+mylist$stud.marks
+```
+
+```{r}
+mylist$stud.marks[2]
+```
+
+```{r}
+names(mylist)
+```
+
+```{r}
+names(mylist) <- c('id','name','marks')
+
+names(mylist)
+```
+
+```{r}
+mylist
+```
+
+Adding a new component
+
+```{r}
+mylist$parents.names <- c('Ana', "Mike")
+mylist
+```
+
+To concatinate two list use c()
+
+```{r}
+newlist <- list(age=19, sex="male");
+expandedlist <-c(mylist, newlist)
+expandedlist
+```
+
+```{r}
+length(expandedlist)
+```
+
+## Exercise
+
+```{r}
+expandedlist <- expandedlist[-5]
+expandedlist <- expandedlist[c(-1,-5)]
+expandedlist$parents.names <- NULL
+expandedlist[['marks']] <- NULL
+```
+
+```{r}
+mylist
+```
+
+```{r}
+unlist(mylist)
+```
+
+```{r}
+mode(mylist)
+```
+
+```{r}
+mode(unlist(mylist))
+```
+
+```{r}
+is.vector(unlist(mylist)) #atomic list with names
+```
+
+```{r}
+is.list(mylist)
+```
+
+```{r}
+is.atomic(mylist)
+```
+
+```{r}
+is.list(unlist(mylist))
+```
+
+# Data Frames
+
+A data frame is a fundamental data structure used to store and manipulate structured data in a tabular format, similar to a spreadsheet or database table. Data frames are especially useful for handling real-world data, where you have rows representing observations or cases and columns representing variables or attributes.
+
+#Creating a Data Frame
+
+```{r}
+my.dataframe <- data.frame(site=c('A', 'B', 'A','A', 'B'),
+                           season=c('winter', 'summer', 'summer', 'spring', 'fall'),                               ph = c(7.4, 6.3, 8.6, 7.2, 8.9))
+my.dataframe
+```
+
+## Exercise
+
+```{r}
+my.dataframe <- data.frame(site=c('A', 'B', 'A','A', 'B'),
+                           season=c('winter', 'summer', 'summer', 'spring', 'fall'),                               ph = c(7.4, 6.3, 8.6, 7.2, 8.9))
+my.dataframe[3, 2]
+```
+
+```{r}
+my.dataframe[['site']]
+```
+
+```{r}
+my.dataframe['site']
+```
+
+```{r}
+my.dataframe[my.dataframe$ph>7, ]
+```
+
+```{r}
+my.dataframe[my.dataframe$ph>7, c('site', 'ph')]
+```
+
+For quering a data frame
+
+```{r}
+subset(my.dataframe, ph>7)
+```
+
+```{r}
+subset(my.dataframe, ph>7, c("site", "ph"))
+```
+
+```{r}
+subset(my.dataframe[1:2,], ph>7, c(site, ph))
+```
+
+```{r}
+my.dataframe[my.dataframe$season=='summer', 'ph'] <- my.dataframe[my.dataframe$season=='summer', 'ph'] + 1 
+                                                                  my.dataframe[my.dataframe$season=='summer', 'ph']
+```
+
+```{r}
+my.dataframe[my.dataframe$season=='summer' & my.dataframe$ph>8, 'ph'] <- my.dataframe[my.dataframe$season=='summer' & my.dataframe$ph>8, 'ph'] + 1                                                              
+        
+my.dataframe[my.dataframe$season=='summer', 'ph']                             
+```
+
+#Add a column
+
+```{r}
+my.dataframe$NO3 <- c(234.5, 123.4, 456.7, 567.8, 789.0)
+my.dataframe
+```
+
+```{r}
+#my.dataframe$NO3<-NULL
+my.dataframe <- my.dataframe[, -4]
+my.dataframe
+```
+
+```{r}
+str(my.dataframe)
+```
+
+```{r}
+nrow(my.dataframe)
+```
+
+```{r}
+ncol(my.dataframe)
+```
+
+```{r}
+dim(my.dataframe)
+```
+
+```{r}
+ edit(my.dataframe) #this brings up a data editor
+
+ View(my.dataframe) #this brings up a uneditable tab that display the data for you to view.
+```
+
+```{r}
+names(my.dataframe)
+```
+
+```{r}
+names(my.dataframe) <- c('area', 'season', 'P.h.')
+my.dataframe
+```
+
+```{r}
+names(my.dataframe)[3] <- 'ph'
+my.dataframe 
+```
+
+# Tibbles
+
+a tibble is a modern data frame implementation introduced by the tidyverse.
+
+```{r}
+install.packages("tibble")
+                                                                  library(tibble)
+```
+
+#Creating a Tibble
+
+```{r}
+my.tibble <- tibble(TempCels = sample(-10:40, size=100, replace=TRUE), 
+                    TempFahr = TempCels*9/5+32,
+                    Location = rep(letters[1:2], each=50))
+my.tibble
+```
+
+Using Dataset
+
+```{r}
+install.packages("palmerpenguins")
+library(palmerpenguins)
+data(penguins)
+dim(penguins)
+class(penguins)
+penguins
+```
+
+Converting data frame to tibble
+
+```{r}
+pe <-as_tibble(penguins)
+class(pe)
+```
+
+```{r}
+pe
+```
+
+## Mode and Class
+
+The mode function returns the internal storage mode of an R object. It indicates how the data is stored in memory.The modes in R include "numeric," "character," "logical," "complex," "raw," and "list," among others.
+
+The class function returns the class or data type of an R object. It indicates how R treats and interacts with the data. In R, an object can belong to one or more classes, which defines its behavior in various operations and functions.
+
+```{r}
+x <- 1:16
+mode(x)
+```
+
+```{r}
+dim(x) <- c(4,4)
+class(x) 
+```
+
+```{r}
+is.numeric(x)
+```
+
+```{r}
+mode(x) <- "character"
+mode(x)
+```
+
+```{r}
+class(x)
+```
+
+Even if mode changes class remains same
+
+```{r}
+x <- factor(x)
+class(x)
+```
+
+```{r}
+mode(x)
+```
+
+```{r}
+is.array(x)
+```
+
+```{r}
+is.list(x)
+```
+
+```{r}
+is.data.frame(x)
+```
+
+```{r}
+is.matrix(x)
+```
+
+```{r}
+is_tibble(x)
+```
+
+```{r}
+is.vector(x)
+```
+
+```{r}
+typeof(x)
+```
+
+## Subsetting a tibble in smaller tibble
+
+```{r}
+class(pe[1:15, c("bill_length_mm", "bill_depth_mm")])
+```
+
+```{r}
+class(penguins[1:15, c("bill_length_mm", "bill_depth_mm")])
+```
+
+```{r}
+class(pe[1:15, c("bill_length_mm")])
+```
+
+```{r}
+class(penguins[1:15, c("bill_length_mm")])
+```
+
+#Note filter() and select()
+
+```{r}
+install.packages("dplyr")
+library(dplyr)
+```
+
+```{r}
+select(filter(pe, species=="Adelie"), bill_length_mm, bill_depth_mm)
+```
+
+```{r}
+filter(select(pe, bill_length_mm, bill_depth_mm, species), species=="Adelie")
+```
+
+## Exercise
+
+```{r}
+pe
+```
+
+```{r}
+pe[pe$species=='Adelie', c("bill_length_mm", "bill_depth_mm")]
+```
+
+```{r}
+subset(pe, pe$species=='Adelie', c("bill_length_mm", "bill_depth_mm"))
+```
+
+```{r}
+select(pe, bill_length_mm, bill_depth_mm, species) |> filter(species=="Adelie")
+```
+
+## Exercise
+
+```{r}
+filter(pe, species=="Adelie") |> select(bill_length_mm, bill_depth_mm, species)
+```
+
+Create a data object to hold student names (`Judy`, `Max`, `Dan`) and their grades (\`78`,`85`,`99`) Convert number grades to letter grades:`90-100`:`A`;`80-89`:`B`;`70-79`:`C`; \`\<70`:`F\`
+
+```{r}
+students <- list(names=c("Judy", "Max", "Dan"),
+                 grades=c(78, 85, 99))
+print ("before:")
+```
+
+```{r}
+students
+```
+
+```{r}
+gradeConvertor<- function (grade){
+  grade = as.numeric(grade)
+  if(grade > 100 | grade < 0) print ("grade out of the range")
+  else if(grade >= 90 & grade <= 100) return ("A")
+  else if(grade >= 80 & grade < 90) return ("B")
+  else if(grade >= 70 & grade < 80) return ("C")
+  else return ("F")
+}
+
+#students$grades <-sapply(students$grades, gradeConvertor)
+
+for(i in 1:length(students$grades)){
+  students$grades[i] = gradeConvertor(students$grades[i])
+}
+
+print ("after:")
+```
+
+```{r}
+students
+```
