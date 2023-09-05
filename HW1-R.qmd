@@ -1088,11 +1088,11 @@ ncol(my.dataframe)
 dim(my.dataframe)
 ```
 
-```{r}
- edit(my.dataframe) #this brings up a data editor
+#```{r}
+# edit(my.dataframe) #this brings up a data editor
 
- View(my.dataframe) #this brings up a uneditable tab that display the data for you to view.
-```
+# View(my.dataframe) #this brings up a uneditable tab that display #the data for you to view.
+#```
 
 ```{r}
 names(my.dataframe)
