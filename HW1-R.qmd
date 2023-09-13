@@ -2,7 +2,23 @@
 title: "HW1-R"
 format: html
 editor: visual
+author: Himanshu Nimbarte
 ---
+
+# Author - Himanshu Nimbarte
+
+# GitHub - Himanshu200102
+
+## Installing/loading
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+if(!require("pacman"))
+install.packages("pacman")
+
+pacman::p_load(tidyverse,
+  dlookr,
+  ggpubr)
+```
 
 # Introduction to R HW1
 
@@ -1088,11 +1104,11 @@ ncol(my.dataframe)
 dim(my.dataframe)
 ```
 
-#```{r}
-# edit(my.dataframe) #this brings up a data editor
+#\`\`\`{r} \# edit(my.dataframe) #this brings up a data editor
 
 # View(my.dataframe) #this brings up a uneditable tab that display #the data for you to view.
-#```
+
+#\`\`\`
 
 ```{r}
 names(my.dataframe)
