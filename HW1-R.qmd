@@ -1,6 +1,6 @@
 ---
 title: "HW1-R"
-format: html
+format: pdf
 editor: visual
 author: Himanshu Nimbarte
 ---
